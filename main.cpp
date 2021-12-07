@@ -3,6 +3,7 @@
 #include <graphics.h>
 #include <stdio.h>
 #include<iostream>
+#include "Clasament.h"
 using namespace std;
 
 int margin = 70, boxsize = 70;
@@ -102,7 +103,7 @@ void generateBoard(){
 
 int main()
 {
-generateBoard();
-
+//generateBoard();
+afisareGrafix();
 return 0;
 }

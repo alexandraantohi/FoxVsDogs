@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include<iostream>
 #include "Clasament.h"
+#include "meniu.h"
 using namespace std;
 
 int margin = 70, boxsize = 70;
@@ -104,6 +105,7 @@ void generateBoard(){
 int main()
 {
 //generateBoard();
-afisareGrafix();
+//afisareGrafix();
+mainMenu();
 return 0;
 }

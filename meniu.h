@@ -21,7 +21,6 @@ void mainMenu(){
     initwindow(720, 720);
     readimagefile("background.jpg",0,0,720,720);
     setcolor(COLOR(255,100,0));
-    moveto(50,50);
 
     midx = getmaxx() / 2;
     midy = getmaxy() / 2;
@@ -47,7 +46,6 @@ void mainMenu(){
             mode = 3;
     }
 
-    //_getch();
     closegraph();
 
 }

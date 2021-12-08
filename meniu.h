@@ -30,7 +30,7 @@ void mainMenu(){
     outtextxy(midx, 120, "FOX AND HOUNDS");
 
     registermousehandler(WM_LBUTTONDOWN, getCoordonates);
-    /* draw a rectangle */
+    
     settextstyle(10, HORIZ_DIR, 5);
     while(mode==0){
 

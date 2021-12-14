@@ -111,7 +111,7 @@ void desparteCuvant(char *p, float &c){ ///se face dintr- un string, informatie 
 void afisareGrafix(){ ///afisarea in grafica a topului
     int high=720, width=720;
     initwindow(high, width); //init. interfata
-    setbkcolor(COLOR(128,128,128));
+    setbkcolor(COLOR(33,36,41));
     int midx=getmaxx()/2;
     int y=100;
     int random=rand()%10+1; //culoare font "top player.." aleasa random

@@ -14,7 +14,7 @@ void getCoordonates(int x1,int y1){
     menuCoordinates.i=x1;
     menuCoordinates.j=y1;
 }
-void mainMenu(){
+int mainMenu(){
     int style, midx, midy;
     int size = 1;
 
@@ -47,6 +47,7 @@ void mainMenu(){
     }
 
     closegraph();
+    return mode;
 
 }
 

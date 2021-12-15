@@ -6,10 +6,17 @@
 #include "Clasament.h"
 #include "meniu.h"
 #include "Board.h"
+#include "joc.h"
 
 int main()
 {
-generateBoard();
+int mode = 0;
+mode = mainMenu();
+if(mode==2){
+    //generateBoard();
+    joc_pvp();
+}
+//generateBoard();
 //afisareGrafix();
 //mainMenu();
 return 0;

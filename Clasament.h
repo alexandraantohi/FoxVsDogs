@@ -20,7 +20,7 @@ using namespace std;
 struct clasament{ ///struct pentru top cu TImp &Nume
     float timp;
     char nume[100];
-};
+}joacaAcum;
 
 ///TO DO: citirea numelui in timpul jocului! (in scriereFisier();
 
@@ -89,9 +89,9 @@ unsigned citireDinFisierInMatrice(clasament tp[]){
 ///TO DO: citirea numelui in timpul jocului! (in scriereFisier();
 clasament scriereFisier(){
     clasament usr;
-    strcpy(usr.nume, "NouX2"); ///utlerior se va lua de la tastatura
+    strcpy(usr.nume, joacaAcum.nume); ///utlerior se va lua de la tastatura
     strcpy(usr.nume+strlen(usr.nume),"\n"); ///memorarea cu tot cu rand nou pt a facilita scrierea in fisier
-    usr.timp=20;
+    usr.timp=joacaAcum.timp;
     return usr; ///se returneaza un camp de tipul struct cu datele userului
 }
 
@@ -111,7 +111,7 @@ void desparteCuvant(char *p, float &c){ ///se face dintr- un string, informatie 
 void afisareGrafix(){ ///afisarea in grafica a topului
     int high=720, width=720;
     initwindow(high, width); //init. interfata
-    setbkcolor(COLOR(33,36,41));
+    setbkcolor(COLOR(128,128,128));
     int midx=getmaxx()/2;
     int y=100;
     int random=rand()%10+1; //culoare font "top player.." aleasa random

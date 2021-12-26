@@ -48,7 +48,7 @@ void sir(int minute, int secunde, char cronometru[60]){
 }
 
 ///interfata pentru sfarsit de joc:
-void paginaGameOver(){
+int paginaGameOver(){
     timp.start=time(NULL);
     int high=720, width=720;
     initwindow(high, width); //init. interfata
@@ -66,6 +66,7 @@ void paginaGameOver(){
     timp.finish=time(NULL) - timp.start;
     minute=timp.finish/60;
     secunde=timp.finish%60;
+    joacaAcum.timp=secunde;
     ///toDo: minutele si secundele vor fi puse in "Clasament.h" pentru noul usr, la un loc cu numele resp.
 
     char cronometru[60];
@@ -110,10 +111,9 @@ void paginaGameOver(){
     //getch();
     closegraph();
 
-    if(click==1)
-        generateBoard();
-    else
-        afisareGrafix();
+    ///click==1 => se joaca din nou
+    ///click==2 => se afiseaza clasamentul
+    return click;
 }
 
 #endif // GAMEOVER_H_INCLUDED

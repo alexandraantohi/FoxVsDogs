@@ -8,13 +8,14 @@
 #include "gameOver.h"
 using namespace std;
 
-int margin = 70, boxsize = 70;
+int margin = 70, boxsize = 70, dificultate = 1;
 
 struct animal {
     int x, y,color;//pozitia pe tabla; x-coloana,y-rand
 };
 struct animal dogs[4];
 struct animal fox;
+
 
 void drawPiece(int a, int b, int color){
     //deseneaza piesa pe tabla la pozitia a, b de culoarea color
@@ -191,38 +192,62 @@ void muta_piesa_pvc(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y
 
     //for(int i=counter_dog; i<4; i++)
     bool ok = false;
-    int new_x;
+    int new_x, new_x_dificultate_2, new_y;
     while (!ok)
     {
         counter_dog++;
         counter_dog = counter_dog % 4; //trece la urmatorul caine si de la capat
-        cout<<"mutam"<<counter_dog;
+        new_y = dogs[counter_dog].y -1;
         if (dogs[counter_dog].y % 2 != 0)
         {
             //facem mutare la dreapta
             new_x = dogs[counter_dog].x + 1;
-            cout<<"dreapta";
+            new_x_dificultate_2 = dogs[counter_dog].x - 1;
         }
         else
         {
             //face mutare la stanga
             new_x = dogs[counter_dog].x - 1;
-            cout<<"stanga";
+            new_x_dificultate_2 = dogs[counter_dog].x + 1;
         }
-        if (celulaOcupata(new_x, dogs[counter_dog].y - 1) == false)
+        if(dificultate == 0)
         {
-            movement_dog(dogs[counter_dog],new_x, dogs[counter_dog].y - 1);
-            cout<<"am mutat dog"<<counter_dog;
-            ok = true;
-        }
-        else 
+            if (celulaOcupata(new_x, new_y) == false)
+            {
+                movement_dog(dogs[counter_dog], new_x, new_y);
+                ok = true;
+            }
+        } 
+        else
+        //pe dificultate 1 daca stanga, dreapta sunt libere si diferite de vulpe ca sa putem muta un caine
         {
-            cout<<"celulta ocupata\n";
+            bool pas_1, pas_2;
+            pas_1 = !celulaOcupata(new_x, new_y);
+            if (new_x_dificultate_2 >= 0 && new_x_dificultate_2 < 8)
+            {
+                if(fox.x == new_x_dificultate_2 && fox.y == new_y)
+                {
+                    pas_2 = false;
+                }
+                else
+                {
+                    pas_2 = true;
+                }
+            }
+            else
+            {
+                pas_2 = true;
+            }
+            
+            if (pas_1 && pas_2)
+            {
+                movement_dog(dogs[counter_dog], new_x, new_y);
+                ok = true;
+            }
         }
     }
 
     castig = verificaScenariuCastig();
-    // cout<<castig;
     if(castig != 0)
     {
         if(castig == 1)

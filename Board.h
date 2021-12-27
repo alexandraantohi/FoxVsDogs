@@ -119,7 +119,7 @@ int verificaScenariuCastig()
 
 void closeBoard()
 {
-    //getch();
+    getch();
     closegraph();
 }
 
@@ -163,12 +163,14 @@ void muta_piesa(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
         }
     }
     castig = verificaScenariuCastig();
+    cout<<castig;
     if(castig != 0)
     {
         if(castig == 1)
             cout<<"Dogs win";
         else cout<<"Fox wins";
-        closeBoard();
+        //closeBoard();
+        paginaGameOver();
     }
 }
 
@@ -181,75 +183,6 @@ void click_select(int x, int y){
 void click_drop(int x, int y){
     if(!transforma_coordonate_in_pozitie(x,y)) return;
     muta_piesa(xSelectat, ySelectat, x, y);
-}
-
-void click_handler(int x, int y)
-{
-    //-nu chiar-muta fox in casuta pe care se da click
-    int castig;
-    if(!transforma_coordonate_in_pozitie(x,y)) return;
-    /*
-    // cod mutat in transforma_coordonate_in_pozitie()
-    if(x<margin || y<margin || x>margin + 8*boxsize|| y>margin+8*boxsize) return;//verifica daca click-ul a fost pe tabla si nu pe langa
-    x=x-margin;
-    x=x/boxsize;
-    y=y-margin;
-    y=y/boxsize;
-
-    //calculeaza in care celula de pe tabla a fost dat click
-    */
-    if(urmeazaMiscare)
-    {
-        if(!aFostFoxUltimaMiscare)
-        {
-            if(xSelectat == fox.x && ySelectat == fox.y)
-            {
-                if(movement_fox(fox,x,y))
-                {
-                    aFostFoxUltimaMiscare = true;
-                    urmeazaMiscare = false;
-                }
-                urmeazaMiscare = false;
-            }
-        }
-        else
-        {
-            for(int i=0; i<4; i++)
-            {
-                if(xSelectat == dogs[i].x && ySelectat == dogs[i].y) // daca a fost selectat un dog
-                {
-                    if(movement_dog(dogs[i],x,y)) // daca a mutat dog cu succes
-                    {
-                        aFostFoxUltimaMiscare = false;
-                        urmeazaMiscare = false;
-                    }
-                    else
-                    {
-                        //trebuie ales alt dog
-                        urmeazaMiscare = false;
-                    }
-                }
-
-            }
-        }
-    }
-    else
-    {
-        urmeazaMiscare = true;
-        xSelectat = x;
-        ySelectat = y;
-        //memoreaza coordonatele unde a fost click
-    }
-    //cout<<x<<"---"<<y<<endl;
-    //cout<<"Urmeaza dog"<<aFostFox<<endl;
-    castig = verificaScenariuCastig();
-    if(castig != 0)
-    {
-        if(castig == 1)
-            cout<<"Dogs win";
-        else cout<<"Fox wins";
-        closeBoard();
-    }
 }
 
 void generateBoard()
@@ -306,7 +239,7 @@ void joc_pvp(){
     registermousehandler(WM_LBUTTONUP, click_drop);
 
     closeBoard();
-    paginaGameOver();
+   
 }
 
 

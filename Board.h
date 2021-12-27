@@ -122,17 +122,81 @@ void closeBoard()
     closegraph();
 }
 
+bool transforma_coordonate_in_pozitie(int &x, int &y){
+    //calculeaza in care celula de pe tabla a fost dat click
+    if(x<margin || y<margin || x>margin + 8*boxsize|| y>margin+8*boxsize) return false;//verifica daca click-ul a fost pe tabla si nu pe langa
+    x=x-margin;
+    x=x/boxsize;
+    y=y-margin;
+    y=y/boxsize;
+    return true;
+}
+
+void muta_piesa(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
+    int castig;
+    if(!aFostFoxUltimaMiscare)
+        {
+            if(sursa_x == fox.x && sursa_y == fox.y)
+            {
+                if(movement_fox(fox,destinatie_x,destinatie_y))
+                {
+                    aFostFoxUltimaMiscare = true;
+                }
+            }
+        }
+    else
+    {
+        for(int i=0; i<4; i++)
+        {
+            if(sursa_x == dogs[i].x && sursa_y == dogs[i].y) // daca a fost selectat un dog
+            {
+                if(movement_dog(dogs[i],destinatie_x,destinatie_y)) // daca a mutat dog cu succes
+                {
+                    aFostFoxUltimaMiscare = false;
+                }
+                // else
+                // {
+                //     //trebuie ales alt dog
+                // }
+            }
+        }
+    }
+    castig = verificaScenariuCastig();
+    if(castig != 0)
+    {
+        if(castig == 1)
+            cout<<"Dogs win";
+        else cout<<"Fox wins";
+        closeBoard();
+    }
+}
+
+void click_select(int x, int y){
+    if(!transforma_coordonate_in_pozitie(x,y)) return;
+    xSelectat = x;
+    ySelectat = y;
+}
+
+void click_drop(int x, int y){
+    if(!transforma_coordonate_in_pozitie(x,y)) return;
+    muta_piesa(xSelectat, ySelectat, x, y);
+}
+
 void click_handler(int x, int y)
 {
     //-nu chiar-muta fox in casuta pe care se da click
     int castig;
+    if(!transforma_coordonate_in_pozitie(x,y)) return;
+    /*
+    // cod mutat in transforma_coordonate_in_pozitie()
     if(x<margin || y<margin || x>margin + 8*boxsize|| y>margin+8*boxsize) return;//verifica daca click-ul a fost pe tabla si nu pe langa
     x=x-margin;
     x=x/boxsize;
     y=y-margin;
     y=y/boxsize;
+
     //calculeaza in care celula de pe tabla a fost dat click
-    //movement(fox,x,y);
+    */
     if(urmeazaMiscare)
     {
         if(!aFostFoxUltimaMiscare)
@@ -144,6 +208,7 @@ void click_handler(int x, int y)
                     aFostFoxUltimaMiscare = true;
                     urmeazaMiscare = false;
                 }
+                urmeazaMiscare = false;
             }
         }
         else
@@ -182,7 +247,7 @@ void click_handler(int x, int y)
         if(castig == 1)
             cout<<"Dogs win";
         else cout<<"Fox wins";
-        //closeBoard();
+        closeBoard();
     }
 }
 
@@ -234,7 +299,9 @@ void joc_pvp(){
     generateBoard();
     initAnimals();
     drawAnimals();
-    registermousehandler(WM_LBUTTONDOWN, click_handler);
+    // registermousehandler(WM_LBUTTONDOWN, click_handler);
+    registermousehandler(WM_LBUTTONDOWN, click_select);
+    registermousehandler(WM_LBUTTONUP, click_drop);
 
     closeBoard();
 

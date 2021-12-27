@@ -55,6 +55,8 @@ void movement(animal &e, int a, int b){
 }
 
 bool celulaOcupata(int x,int y){
+    if(x<0 || x>7 || y<0 || y>7)
+        return true; // in afara tablei
     for(int i=0;i<4;i++)
         if(dogs[i].x == x && dogs[i].y == y)
             return true;
@@ -174,6 +176,63 @@ void muta_piesa(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
     }
 }
 
+int counter_dog = -1;
+void muta_piesa_pvc(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
+    int castig;
+
+    if (sursa_x == fox.x && sursa_y == fox.y)
+    {
+        if (movement_fox(fox, destinatie_x, destinatie_y))
+        {
+            aFostFoxUltimaMiscare = true;
+        }
+    }
+    else return;
+
+    //for(int i=counter_dog; i<4; i++)
+    bool ok = false;
+    int new_x;
+    while (!ok)
+    {
+        counter_dog++;
+        counter_dog = counter_dog % 4; //trece la urmatorul caine si de la capat
+        cout<<"mutam"<<counter_dog;
+        if (dogs[counter_dog].y % 2 != 0)
+        {
+            //facem mutare la dreapta
+            new_x = dogs[counter_dog].x + 1;
+            cout<<"dreapta";
+        }
+        else
+        {
+            //face mutare la stanga
+            new_x = dogs[counter_dog].x - 1;
+            cout<<"stanga";
+        }
+        if (celulaOcupata(new_x, dogs[counter_dog].y - 1) == false)
+        {
+            movement_dog(dogs[counter_dog],new_x, dogs[counter_dog].y - 1);
+            cout<<"am mutat dog"<<counter_dog;
+            ok = true;
+        }
+        else 
+        {
+            cout<<"celulta ocupata\n";
+        }
+    }
+
+    castig = verificaScenariuCastig();
+    // cout<<castig;
+    if(castig != 0)
+    {
+        if(castig == 1)
+            cout<<"Dogs win";
+        else cout<<"Fox wins";
+        //closeBoard();
+        paginaGameOver();
+    }
+}
+
 void click_select(int x, int y){
     if(!transforma_coordonate_in_pozitie(x,y)) return;
     xSelectat = x;
@@ -183,6 +242,11 @@ void click_select(int x, int y){
 void click_drop(int x, int y){
     if(!transforma_coordonate_in_pozitie(x,y)) return;
     muta_piesa(xSelectat, ySelectat, x, y);
+}
+
+void click_drop_pvc(int x, int y){
+    if(!transforma_coordonate_in_pozitie(x,y)) return;
+    muta_piesa_pvc(xSelectat, ySelectat, x, y);
 }
 
 void generateBoard()
@@ -240,6 +304,17 @@ void joc_pvp(){
 
     closeBoard();
    
+}
+
+void joc_pvc() {
+    timp.start=time(NULL);
+    generateBoard();
+    initAnimals();
+    drawAnimals();
+    registermousehandler(WM_LBUTTONDOWN, click_select);
+    registermousehandler(WM_LBUTTONUP, click_drop_pvc);
+
+    closeBoard();
 }
 
 

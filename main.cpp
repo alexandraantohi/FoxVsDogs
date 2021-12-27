@@ -13,8 +13,20 @@ void functionare(){
             closegraph();
             functionare();
         }
-        else{
+        if(meniu == 2){
             joc_pvp();
+            int terminat=paginaGameOver();
+            if(terminat==1){
+                closegraph();
+                functionare();
+            }
+            else{
+                afisareGrafix();
+            }
+        }
+        else if(meniu == 1)
+        {
+            joc_pvc();
             int terminat=paginaGameOver();
             if(terminat==1){
                 closegraph();

@@ -1,21 +1,42 @@
-#include <conio.h>
-#include <dos.h>
 #include <graphics.h>
-#include <stdio.h>
 #include<iostream>
-#include "Clasament.h"
+#include "nameIntro.h"
 #include "meniu.h"
 #include "Board.h"
-#include "joc.h"
+#include "gameOver.h"
 
+void functionare(){
+    int meniu=mainMenu();
+    if(meniu!=3){
+        int name=apelareNume();
+        if(name==1){
+            closegraph();
+            functionare();
+        }
+        else{
+            joc_pvp();
+            int terminat=paginaGameOver();
+            if(terminat==1){
+                closegraph();
+                functionare();
+            }
+            else{
+                afisareGrafix();
+            }
+        }
+    }
+}
 int main()
 {
+    functionare();
+/*
 int mode = 0;
 mode = mainMenu();
-if(mode==2){
+if(mode!=3){
     //generateBoard();
     joc_pvp();
-}
+}*/
+//paginaGameOver();
 //generateBoard();
 //afisareGrafix();
 //mainMenu();

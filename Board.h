@@ -5,6 +5,7 @@
 #include <graphics.h>
 #include <stdio.h>
 #include<iostream>
+#include "gameOver.h"
 using namespace std;
 
 int margin = 70, boxsize = 70;
@@ -118,7 +119,7 @@ int verificaScenariuCastig()
 
 void closeBoard()
 {
-    getch();
+    //getch();
     closegraph();
 }
 
@@ -296,6 +297,7 @@ void generateBoard()
 }
 
 void joc_pvp(){
+    timp.start=time(NULL);
     generateBoard();
     initAnimals();
     drawAnimals();
@@ -304,7 +306,7 @@ void joc_pvp(){
     registermousehandler(WM_LBUTTONUP, click_drop);
 
     closeBoard();
-
+    paginaGameOver();
 }
 
 

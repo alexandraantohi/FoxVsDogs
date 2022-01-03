@@ -8,15 +8,7 @@
 #include "gameOver.h"
 #include "joc.h"
 using namespace std;
-/*
-int margin = 70, boxsize = 70, dificultate = 1;
 
-struct animal {
-    int x, y,color;//pozitia pe tabla; x-coloana,y-rand
-};
-struct animal dogs[4];
-struct animal fox;
-*/
 struct optiuniJoc joc;
 
 void initJoc() {
@@ -112,12 +104,6 @@ bool movement_fox(animal &fox, int x, int y){
     movement(fox,x,y);
 }
 
-/*
-bool urmeazaMiscare = false;
-bool aFostFoxUltimaMiscare = false;
-int xSelectat,ySelectat;
-*/
-
 int verificaScenariuCastig()
 {
     if(joc.fox.y == 7) // daca a ajuns pe ultimul rand, a castigat fox
@@ -191,7 +177,6 @@ void muta_piesa(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
     }
 }
 
-//int counter_dog = -1;
 void muta_piesa_pvc(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
     int castig;
 

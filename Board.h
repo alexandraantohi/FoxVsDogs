@@ -11,6 +11,12 @@ using namespace std;
 
 struct optiuniJoc joc;
 
+struct {
+    time_t start, finish;
+    char numeBoard[300];
+}timp;
+
+
 void initJoc() {
     joc.margin = 70;
     joc.boxsize = 70;
@@ -167,13 +173,17 @@ void muta_piesa(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
     }
     castig = verificaScenariuCastig();
     cout<<castig;
-    if(castig != 0)
+    if (castig != 0)
     {
-        if(castig == 1)
-            cout<<"Dogs win";
-        else cout<<"Fox wins";
+        bool castigaVulpeaGameOver = true;
+        if (castig == 1) {
+            cout << "Dogs win";
+            castigaVulpeaGameOver = false;
+        }
+        else cout << "Fox wins";
         //closeBoard();
-        paginaGameOver();
+        timp.finish = time(NULL) - timp.start;
+        paginaGameOver(timp.finish, castigaVulpeaGameOver, timp.numeBoard);
     }
 }
 
@@ -246,15 +256,19 @@ void muta_piesa_pvc(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y
             }
         }
     }
-
     castig = verificaScenariuCastig();
-    if(castig != 0)
+
+    if (castig != 0)
     {
-        if(castig == 1)
-            cout<<"Dogs win";
-        else cout<<"Fox wins";
+        bool castigaVulpeaGameOver = true;
+        if (castig == 1) {
+            cout << "Dogs win";
+            castigaVulpeaGameOver = false;
+        }
+        else cout << "Fox wins";
         //closeBoard();
-        paginaGameOver();
+        timp.finish = time(NULL) - timp.start;
+        paginaGameOver(timp.finish, castigaVulpeaGameOver, timp.numeBoard);
     }
 }
 
@@ -318,8 +332,9 @@ void generateBoard()
 
 }
 
-void joc_pvp(){
-    timp.start=time(NULL);
+void joc_pvp() {
+    strcpy(timp.numeBoard, "1");
+    timp.start = time(NULL);
     initJoc();
     generateBoard();
     initAnimals();
@@ -332,8 +347,9 @@ void joc_pvp(){
 
 }
 
-void joc_pvc() {
-    timp.start=time(NULL);
+void joc_pvc(char* numeTastaturaNameIntro) {
+    strcpy(timp.numeBoard, numeTastaturaNameIntro);
+    timp.start = time(NULL);
     initJoc();
     generateBoard();
     initAnimals();

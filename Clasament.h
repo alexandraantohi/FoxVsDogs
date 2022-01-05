@@ -22,6 +22,13 @@ struct clasament{ ///struct pentru top cu TImp &Nume
     char nume[100];
 }joacaAcum;
 
+void numePlayer(char *numeClasament){
+    strcpy(joacaAcum.nume, numeClasament);
+}
+void timpPlayer(float timpJucator){
+    joacaAcum.timp=timpJucator;
+}
+
 ///TO DO: citirea numelui in timpul jocului! (in scriereFisier();
 
 unsigned citireDinFisierInMatrice(clasament tp[]); ///citirea din fisier a topului si actualizarea lui + transmiterea spre afisare
@@ -45,14 +52,14 @@ bool combinare(clasament tp[], int &n){
             for(int j=n-1;j>i;j--) ///se face spatiu pentru player daca e in interiorul topului
                 tp[j]=tp[j-1];
             tp[i]=p;
-            if(n<9){ ///daca are cel mai mic timp dar topul nu e plin, se pune la final
+            if(n<10){ ///daca are cel mai mic timp dar topul nu e plin, se pune la final
                 tp[n]=ultim;
                 n++;
             }
             return true;/// = s-a facut modificare in vectorul top => se actualizeaza fisierul cu info
         }
     }
-    if(n<9){ ///se testeaza daca topul nu e plin, din nou
+    if(n<10){ ///se testeaza daca topul nu e plin, din nou
         tp[n]=p;
         n++;
         return true;
@@ -108,7 +115,10 @@ void desparteCuvant(char *p, float &c){ ///se face dintr- un string, informatie 
     strcpy(copie, p+k);
     strcpy(p, copie);
 }
-void afisareGrafix(){ ///afisarea in grafica a topului
+void afisareGrafix(float timpTotal, char *acestNume){ ///afisarea in grafica a topului
+    cout<<"\nAfisare din Clasament a timpului: "<<timpTotal;
+    joacaAcum.timp=timpTotal;
+    strcpy(joacaAcum.nume, acestNume);
     int high=720, width=720;
     initwindow(high, width); //init. interfata
     setbkcolor(COLOR(128,128,128));

@@ -2,6 +2,7 @@
 #define GAMEOVER_H_INCLUDED
 
 #include <iostream>
+#include <string.h>
 #include <time.h> ///pentru time_t
 #include <graphics.h>
 #include <conio.h> ///culoare text
@@ -26,10 +27,7 @@ void getCoordonates2(int x1,int y1){
 ///toDo: implementarea cronometrului se face prin stocarea timpului la care incepe jocul, din care se
 ///       scade timpul la care termina jocul
 
-///struct pt timp:
-struct{
-    time_t start, finish;
-}timp;
+
 
 ///Functie ce tine loc de main
 
@@ -37,8 +35,8 @@ struct{
 ///face din numerele secunde si minute un string + alte informatii:
 void sir(int minute, int secunde, char cronometru[60]){
     char minuteSir[3], secundeSir[3] ;
-    itoa(minute, minuteSir, 3);
-    itoa(secunde, secundeSir, 3);
+    itoa(minute, minuteSir, 10);
+    itoa(secunde, secundeSir, 10);
     strcpy(cronometru, "\0");
     strcpy(cronometru, "Timpul tau este ");
     strcat(cronometru, minuteSir);
@@ -48,8 +46,8 @@ void sir(int minute, int secunde, char cronometru[60]){
 }
 
 ///interfata pentru sfarsit de joc:
-int paginaGameOver(){
-    timp.start=time(NULL);
+void paginaGameOver(time_t timpFinal, bool castigator, char acestNume[]){
+    ///timp.start=time(NULL); => se utilizeaza in functia 'initializareTimp()' pt a putea fi apelat din alt header
     int high=720, width=720;
     initwindow(high, width); //init. interfata
     int midx, midy;
@@ -63,10 +61,12 @@ int paginaGameOver(){
     outtextxy(midx, midy-200, "GAME OVER");
 
     int minute=0, secunde=0;
-    timp.finish=time(NULL) - timp.start;
-    minute=timp.finish/60;
-    secunde=timp.finish%60;
-    joacaAcum.timp=secunde;
+    minute=timpFinal/60;
+    secunde=timpFinal%60;
+    float timpTotal=secunde;
+    timpTotal/=100;
+    timpTotal+=minute;
+    cout<<"\ntimpul scos: "<<timpFinal<<"\ncu minute si sec: "<<minute<<' '<<secunde<<"\n si in float: "<<timpTotal;
     ///toDo: minutele si secundele vor fi puse in "Clasament.h" pentru noul usr, la un loc cu numele resp.
 
     char cronometru[60];
@@ -74,33 +74,39 @@ int paginaGameOver(){
 
     ///afisare cine a castiga:
     settextstyle(4,0,5);
-    bool castigaVulpea=true; ///doar de proba
     //setbkcolor(RED);
-    if(castigaVulpea){
+    if(castigator){
         outtextxy(midx, midy, "A catigat vulpea!");
     }
     else{
         outtextxy(midx, midy, "Au catigat cainii!");
     }
 
-    ///afisare cronometru:
-    setcolor(12);
-    settextstyle(3,0,3);
-    //setbkcolor(BLACK);
-    outtextxy(midx-20, midy+170, cronometru); ///afisarea cronometrului
+    ///conditie daca nu s-a jucat pvp:
+    if(acestNume[0]!='1'){
+        ///afisare cronometru:
+        setcolor(12);
+        settextstyle(3,0,3);
+        //setbkcolor(BLACK);
+        outtextxy(midx-20, midy+170, cronometru); ///afisarea cronometrului
+    }
 
     ///implementare buton exit & top:
     settextstyle(6,0,4);
     setcolor(BLACK);
     setbkcolor(YELLOW);
-    outtextxy(midx-200, midy+250, "Afisare Top");
-    outtextxy(midx+170, midy+250, "Play again");
+
+    ///conditie daca nu s-a jucat pvp:
+    if(acestNume[0]!='1')
+        outtextxy(midx-200, midy+250, "Afisare Top");
+    outtextxy(midx+170, midy+250, "   EXIT   ");
+    //outtextxy(midx+170, midy+250, "Play again");
 
     ///folosirea butoanelor:
     registermousehandler(WM_LBUTTONDOWN, getCoordonates2);
     int click=3;
     while(click==3){
-        if(menuCoordinates2.i>=midx-310 && menuCoordinates2.i<=midx-95 && menuCoordinates2.j>=midy+224
+        if(acestNume[0]!='1' && menuCoordinates2.i>=midx-310 && menuCoordinates2.i<=midx-95 && menuCoordinates2.j>=midy+224
             && menuCoordinates2.j<=midy+250+6)
                  click=2; ///afisare top
         if(menuCoordinates2.i>=midx+66 && menuCoordinates2.i<=midx+260 && menuCoordinates2.j>=midy+224
@@ -113,7 +119,9 @@ int paginaGameOver(){
 
     ///click==1 => se joaca din nou
     ///click==2 => se afiseaza clasamentul
-    return click;
+    ///return click;
+    if(click==2 && acestNume[0]!='1')
+        afisareGrafix(timpTotal, acestNume);
 }
 
 #endif // GAMEOVER_H_INCLUDED

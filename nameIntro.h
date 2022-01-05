@@ -6,6 +6,7 @@
 #include <iostream>
 #include<graphics.h>
 #include "Clasament.h"
+#include "Board.h"
 using namespace std;
 struct position3{
     int i, j;
@@ -14,10 +15,9 @@ void getCoordonates3(int x1,int y1){
     menuCoordinates3.i=x1;
     menuCoordinates3.j=y1;
 };
-
 ///se apeleaza prin apelareNume()
 
-int apelareNume(){
+void apelareNume(){
     int gd=DETECT, gm;
     //char nume[100];
     initwindow(720, 720, "NUME PLAYER");
@@ -39,11 +39,14 @@ int apelareNume(){
     outtextxy(10, 390, linie5);
 
     ///pt test nume are val predefinita
-    cin>>joacaAcum.nume;
+
+
+    char deCititNume[300];
+    cin>>deCititNume;
     //strcpy(nume, "Teodor");
-    char acestNume[300]= "Numele tau va fi: ";
-    strcat(acestNume, joacaAcum.nume);
-    outtextxy(50, 500, acestNume);
+    char numeContinuare[300]= "Numele tau va fi: ";
+    strcat(numeContinuare, deCititNume);
+    outtextxy(50, 500, numeContinuare);
 
     settextstyle(6, 0, 3);
     outtextxy(240, 600, "Vrei sa continui?");
@@ -62,17 +65,21 @@ int apelareNume(){
     while(click==3){
         if(menuCoordinates3.i>=midx-260 && menuCoordinates3.i<=midx-57 && menuCoordinates3.j>=pozY
             && menuCoordinates3.j<=pozY+54){
-                 cout<<"DA"; ///apasare DA
+                  ///apasare DA
                  click=2;}
         if(menuCoordinates3.i>=midx+40  && menuCoordinates3.i<=midx+244 && menuCoordinates3.j>=pozY
             && menuCoordinates3.j<=pozY+54){
-                cout<<"NU"; ///reincepe NU
+                 ///reincepe NU
                 click=1;
                 }
     }
     //getch();
     closegraph();
-    return click; ///returneaza ce trebuie apelat:
+    if(click==2){ ///continuare e pentru modul de joc: player vs player / player vs pc
+        joc_pvc(deCititNume);
+    }
+    //t.mode=click;
+    //return t; ///returneaza ce trebuie apelat:
             ///pentru 1: apelare meniu
             ///pentru 2: apelare board
 }

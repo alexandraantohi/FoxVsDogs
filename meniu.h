@@ -10,6 +10,8 @@ struct position {
     int i, j;
 }menuCoordinates;
 
+
+
 void getCoordonates(int x1,int y1){
     menuCoordinates.i=x1;
     menuCoordinates.j=y1;
@@ -30,7 +32,7 @@ int mainMenu(){
     outtextxy(midx, 120, "FOX AND HOUNDS");
 
     registermousehandler(WM_LBUTTONDOWN, getCoordonates);
-    
+
     settextstyle(10, HORIZ_DIR, 5);
     while(mode==0){
 
@@ -48,7 +50,6 @@ int mainMenu(){
 
     closegraph();
     return mode;
-
 }
 
 #endif // MENIU_H_INCLUDED

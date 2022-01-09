@@ -24,6 +24,10 @@ void initJoc() {
     joc.urmeazaMiscare = false;
     joc.aFostFoxUltimaMiscare = false;
     joc.counter_dog = -1;
+    joc.counter_miscari_dog = 0;
+    joc.counter_miscari_fox = 0;
+    joc.istoric_fox_x[0] = 3;
+    joc.istoric_fox_y[0] = 0;
 
 }
 
@@ -84,6 +88,12 @@ bool movement_dog(animal &dog, int x, int y){
         return false; // in afara tablei
     if(dog.y - 1 != y || (dog.x -1 != x&& dog.x+1 != x))
         return false; //mutare ilegala
+
+    joc.counter_miscari_dog++;
+    joc.care_dog[joc.counter_miscari_dog] = joc.counter_dog;
+    joc.istoric_dog_x[joc.counter_miscari_dog] = dog.x;//vechile valori ale lui x
+    joc.istoric_dog_y[joc.counter_miscari_dog] = dog.y;
+
     movement(dog,x,y);
 }
 
@@ -107,7 +117,28 @@ bool movement_fox(animal &fox, int x, int y){
 
     //if(fox.y - 1 != y || (fox.x -1 != x&& fox.x+1 != x))
     //    return false; //mutare ilegala
+    joc.counter_miscari_fox++;
+    joc.istoric_fox_x[joc.counter_miscari_fox] = x;//vechile valori ale lui x
+    joc.istoric_fox_y[joc.counter_miscari_fox] = y;
+
     movement(fox,x,y);
+}
+
+void undo_fox()
+{   if(joc.counter_miscari_fox < 1) return;
+    joc.counter_miscari_fox--;
+    movement(joc.fox, joc.istoric_fox_x[joc.counter_miscari_fox],joc.istoric_fox_y[joc.counter_miscari_fox]);
+}
+
+void undo_dog()
+{
+    int care_dog;
+    if(joc.counter_miscari_dog < 1) return;
+    care_dog = joc.care_dog[joc.counter_miscari_dog];
+
+
+    movement(joc.dogs[care_dog],joc.istoric_dog_x[joc.counter_miscari_dog], joc.istoric_dog_y[joc.counter_miscari_dog]);
+     joc.counter_miscari_dog--;
 }
 
 int verificaScenariuCastig()
@@ -160,9 +191,11 @@ void muta_piesa(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y){
         {
             if(sursa_x == joc.dogs[i].x && sursa_y == joc.dogs[i].y) // daca a fost selectat un dog
             {
+                joc.counter_dog = i;
                 if(movement_dog(joc.dogs[i],destinatie_x,destinatie_y)) // daca a mutat dog cu succes
                 {
                     joc.aFostFoxUltimaMiscare = false;
+
                 }
                 // else
                 // {
@@ -288,6 +321,28 @@ void click_drop_pvc(int x, int y){
     muta_piesa_pvc(joc.xSelectat, joc.ySelectat, x, y);
 }
 
+void click_undo(int x, int y){
+    if(x > 100 && x < 200 && y > 640 && y < 800) {
+    undo_fox();
+    undo_dog();
+    }
+
+}
+
+void click_undo_pvp(int x, int y) {
+    if(x > 100 && x < 200 && y > 640 && y < 800) {
+        if(joc.aFostFoxUltimaMiscare)
+        {
+            undo_fox();
+        }
+        else
+        {
+            undo_dog();
+        }
+        joc.aFostFoxUltimaMiscare = !joc.aFostFoxUltimaMiscare;
+    }
+}
+
 void generateBoard()
 {
     //deseneaza tabla de sah si piesele pe tabla
@@ -328,6 +383,10 @@ void generateBoard()
     //delay(1000);
     //movement(fox,0,1);
     //registermousehandler(WM_LBUTTONDOWN, click_handler);
+    settextstyle(6, 0, 5);
+    setbkcolor(YELLOW);
+    setcolor(BLACK);
+    outtextxy(100, 640, " Undo ");
 
 
 }
@@ -342,7 +401,7 @@ void joc_pvp() {
     // registermousehandler(WM_LBUTTONDOWN, click_handler);
     registermousehandler(WM_LBUTTONDOWN, click_select);
     registermousehandler(WM_LBUTTONUP, click_drop);
-
+    registermousehandler(WM_RBUTTONDOWN, click_undo_pvp);
     closeBoard();
 
 }
@@ -356,7 +415,7 @@ void joc_pvc(char* numeTastaturaNameIntro) {
     drawAnimals();
     registermousehandler(WM_LBUTTONDOWN, click_select);
     registermousehandler(WM_LBUTTONUP, click_drop_pvc);
-
+    registermousehandler(WM_RBUTTONDOWN, click_undo);//click dreapta
     closeBoard();
 }
 

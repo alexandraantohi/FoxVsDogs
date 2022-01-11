@@ -76,7 +76,8 @@ void apelareNume(){
     //getch();
     closegraph();
     if(click==2){ ///continuare e pentru modul de joc: player vs player / player vs pc
-        joc_pvc(deCititNume);
+        int dificultate = menuGameMode();
+        joc_pvc(deCititNume, dificultate);
     }
     //t.mode=click;
     //return t; ///returneaza ce trebuie apelat:

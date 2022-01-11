@@ -14,7 +14,7 @@ struct optiuniJoc joc;
 struct {
     time_t start, finish;
     char numeBoard[300];
-}timp;
+}timp;//pentru cronometru
 
 
 void initJoc() {
@@ -23,10 +23,10 @@ void initJoc() {
     joc.dificultate = 1;
     joc.urmeazaMiscare = false;
     joc.aFostFoxUltimaMiscare = false;
-    joc.counter_dog = -1;
-    joc.counter_miscari_dog = 0;
+    joc.counter_dog = -1;//care caine a fost mutat ultimul pentru pvc
+    joc.counter_miscari_dog = 0;//cate miscari a fost pentru dog
     joc.counter_miscari_fox = 0;
-    joc.istoric_fox_x[0] = 3;
+    joc.istoric_fox_x[0] = 3;//pozitiile la care a fost fox
     joc.istoric_fox_y[0] = 0;
 
 }
@@ -62,7 +62,7 @@ void initAnimals(){
 }
 
 void movement(animal &e, int a, int b){
-    //muta fox la pozitia a,b
+    //muta piesa la pozitia a,b
     drawPiece(e.x,e.y, BLACK);
     drawPiece(a,b,e.color);
     e.x = a;
@@ -138,7 +138,7 @@ void undo_dog()
 
 
     movement(joc.dogs[care_dog],joc.istoric_dog_x[joc.counter_miscari_dog], joc.istoric_dog_y[joc.counter_miscari_dog]);
-     joc.counter_miscari_dog--;
+    joc.counter_miscari_dog--;
 }
 
 int verificaScenariuCastig()
@@ -253,7 +253,7 @@ void muta_piesa_pvc(int sursa_x, int sursa_y, int destinatie_x, int destinatie_y
             new_x = joc.dogs[joc.counter_dog].x - 1;
             new_x_dificultate_2 = joc.dogs[joc.counter_dog].x + 1;
         }
-        if(joc.dificultate == 0)
+        if(joc.dificultate == 1)//verifica daca celula un trebuie sa mute este libera
         {
             if (celulaOcupata(new_x, new_y) == false)
             {
@@ -406,10 +406,11 @@ void joc_pvp() {
 
 }
 
-void joc_pvc(char* numeTastaturaNameIntro) {
+void joc_pvc(char* numeTastaturaNameIntro, int dificultate) {
     strcpy(timp.numeBoard, numeTastaturaNameIntro);
     timp.start = time(NULL);
     initJoc();
+    joc.dificultate = dificultate;
     generateBoard();
     initAnimals();
     drawAnimals();

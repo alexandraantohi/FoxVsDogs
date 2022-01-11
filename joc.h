@@ -4,7 +4,7 @@
 
 
 struct animal {
-    int x, y,color;//pozitia pe tabla; x-coloana,y-rand
+    int x, y, color;//pozitia pe tabla; x-coloana,y-rand
 };
 
 struct optiuniJoc {
@@ -15,11 +15,12 @@ struct optiuniJoc {
     //definite pentru pvp: urmeazaMiscare, aFostFoxUltimaMiscare
     bool urmeazaMiscare;
     bool aFostFoxUltimaMiscare;
-    int xSelectat,ySelectat;
+    int xSelectat, ySelectat;
     int counter_dog;
     int istoric_fox_x[100], istoric_fox_y[100];//array pentru coordonate
     int care_dog[100], istoric_dog_x[100], istoric_dog_y[100];
     int counter_miscari_dog, counter_miscari_fox;
+    int intDogs[10], intFox[3];
 };
 
 

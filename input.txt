@@ -1,6 +1,2 @@
-1.120000 Teodor
-
-4.200000 Aici
-
-5.120000 TotEu
-
+0.060000Teodor2
+0.130000Teodor
